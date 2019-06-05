@@ -37,12 +37,12 @@ Given the limited time to finish this project, there are quite some improvements
   Here you can modify things like the **tags** used for creaton of infrastructure, **rds** settings, **ec2** instance size,etc. The EC2 image required is **ubuntu 18.0**. Unless there is a need for a specific ami, leave it empty as the terrform code will figure the right ami depending upon the region its being deployed. If the **aws_image_id** is set, then it will override it.
 
 * Dont keep custom passwords unless required.<br>
-  Unless you are not very particular about using a certain password for RDS admin database user, you do not need to modify anything much as this code will generate random passwords for both of them and print it out at the end. This avoids using hard-coded passwords for environments,especially testing, which can later leak and cause problems.
+  Unless you are not very particular about using a certain password for RDS admin database user, you do not need to modify anything much as this code will generate random password and print it out at the end. This avoids using hard-coded passwords for environments,especially testing, which can later leak and cause problems.
 
 * Do the terraform thing.<br>
   Go to the environment directory and run the terraform commands.For example lets do it in prod
   ```
-  $ cd AC3-Terraform-HA-AWS/prod
+  $ cd CW-Terraform-Website/prod
   $ terraform init
   $ terraform plan
   $ terraform apply
