@@ -133,8 +133,9 @@ Finally one can access the app using the ELB endpoint, the id of which is given 
 ## Improvements - Long Term
 * For betterment of production environment, there is almost always some static content. To better serve them, we need to make use of CloudFront so that it does not cause load on the frontend servers.
 * In this example, we are creating the config from userdata. When apps scale and multiple environment requirements come into play , this method is very rigid and problematic. The best way would be to utilize a consul service and installation of consul agent on each server that will pull the required config for the app.This helps clearly segregate code from config. To make it secure, we can also use `kms` or `hashicorp vault` to keep secrets encrypted.
+* For simple applications its better to do deployment on `AWS FARGATE` as you only pay for usage cost and it comes very handy during scaling up and down. As compared to `ECS` where the `EC2` instance needs to be setup, `FARGATE` does not have that and as such saves on the cost. 
 * This application directly does operations with database. In production this can be a problem as database can un-necessarily be hit with same queries. This can be solved by using a caching layer using either Redis or memcache. This way the hits to same queries can be greatly reduced to the database. Caching layers also can be a cause of bottleneck. To overcome such cases, circuit-breaker logic with exponential  backoff should be implemented in the application.
-* Look at tools like `terragrunt` `terratest` for further increasing the modularity of the code and for better testing
+* Look at tools like `terragrunt` `terratest` for further increasing the modularity of the code and for better testing.
 * Remove app deployment out of terraform and make it independant. Infrastructre code and deployment methodology should not be so tightly coupled as it will cause a lot of problems when we scale.
 
 
