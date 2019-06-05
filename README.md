@@ -123,10 +123,10 @@ Finally one can access the app using the ELB endpoint, the id of which is given 
 ## Improvements - Short Term
 * The code base in `app_setup` is not segregated for each individual module like elb, auto-scaling,etc. These individual modules needs to be created in `modules` folder and invoked as with other modules like rds,subnet,vpc,etc
 * The source file is used as `source = "../modules/<module_name>"`.This can be improved by `"git::https://github.com/xxxVxxx/CW-Terraform-Website/modules/<module_name>.git?ref=v1.2.0"`. This way we can do independant code module update and tag them for specific use case across all modules
-* Use `terraform remote backend`. Presently all the senstive data from terraform creation are stored locally. This is a big **NO-NO** for production setup. This should be done via using a remote storage, either S3 or consul. But there is a chicken and egg problem with this as the S3 bucket needs to be created before hand. And since validation of the unique-ness would require time, I have omitted using it for this example. This can also be done later once terraform is run and s3 bucket is created by using `terraform push state`.
+* Use `terraform remote backend`. Presently all the senstive data from terraform creation are stored locally. This is a big **NO-NO** for production setup. This should be done via using a remote storage, either S3 or consul. But there is a chicken and egg problem with this as the S3 bucket needs to be created before hand. And since validation of the unique-ness of the bucket name would require time, I have omitted using it for this example. This can also be done later once terraform is run and s3 bucket is created by using `terraform push state`.
 * Move terraform lock file to dynamodb so that there is a better locking on it when multiple developers work on it.
 * Create the required DNS entries using route53. Presently I have not implemented creating Route53 entries but this is important for real live production.
-* SSL certificates for production environment and ssl termination at ELB
+* SSL certificates for production environment and ssl termination at ELB.
 * Write README files for each of the modules and each of the setup layers to better understand how to use them indpendently.
 
 
