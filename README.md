@@ -64,8 +64,7 @@ Given the limited time to finish this project, there are quite some improvements
   For the first launch it might take a bit of time before the php application is up as the userdata running on the EC2 instance can take time to finish. Make sure the php EC2 instance is fullly up and running and not in initialising stage.
 
 ## Code Structure
-The code base is logically broken at 3 layers. At the core layer is the `modules` folder which contains all the different modules that we will use for aws infrastructure. These are broken into folders according to the functionality they provide. example rds, subnet, vpb_base, etc.
-
+The code base is logically broken at 3 layers. At the core layer is the `modules` folder which contains all the different modules that we will use for aws infrastructure. These are broken into folders according to the functionality they provide. example rds, subnet, vpb_base, etc.<br>
 At the next level we will break the code base into `cluster_setup` `database_setup` `sg_setup` and `app_setup`.Each of these folders do independently what is required out of them. This gives us the freedom to test them individually and also spin up multiple clusters just by using this layer.Each layer can be independently updated for further use case.<br>
 `cluster_setup`: setups the base infra for use. That will include vpc, subnets, internet-gateway, nat-gateway,etc<br>
 `sg_setup`: this creates all the required security groups for this particular setup.<br>
