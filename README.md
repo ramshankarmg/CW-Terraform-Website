@@ -81,7 +81,7 @@ Following things will be created when this terraform module is used.
 * 2 Nat Gateways, one each in the subnet.
 * 3 Route tables; 2 Private and 1 Public.
 * 4 Security groups.
-* 1 RDS cluster either Multi-AZ or non Multi-AZ depending on environment.
+* 1 RDS cluster in Multi-AZ.
 * 1 RDS subnet group.
 * 1 Auto-scaling group.
 * 1 Launch configuration.
@@ -121,8 +121,8 @@ It also creates the `config.php` file dynamically using all the required rds det
 Finally one can access the app using the ELB endpoint, the id of which is given out with terraform output.
 
 ## Improvements - Short Term
-* The code base in `app_setup` is not seggregated for each individual module like elb, auto-scaling,etc. These individual modules needs to be created in `modules` folder and invoked as with other modules like rds,subnet,vpc,etc
-* The source file is used as `source = "../modules/<module_name>"`.This can be improved by `"git::https://github.com/xxxVxxx/AC3-Terraform-HA-AWS/modules/<module_name>.git?ref=v1.2.0"`. This way we can do independant code module update and tag them for specific use case across all modules
+* The code base in `app_setup` is not segregated for each individual module like elb, auto-scaling,etc. These individual modules needs to be created in `modules` folder and invoked as with other modules like rds,subnet,vpc,etc
+* The source file is used as `source = "../modules/<module_name>"`.This can be improved by `"git::https://github.com/xxxVxxx/CW-Terraform-Website/modules/<module_name>.git?ref=v1.2.0"`. This way we can do independant code module update and tag them for specific use case across all modules
 * Use `terraform remote backend`. Presently all the senstive data from terraform creation are stored locally. This is a big **NO-NO** for production setup. This should be done via using a remote storage, either S3 or consul. But there is a chicken and egg problem with this as the S3 bucket needs to be created before hand. And since validation of the unique-ness would require time, I have omitted using it for this example. This can also be done later once terraform is run and s3 bucket is created by using `terraform push state`.
 * Move terraform lock file to dynamodb so that there is a better locking on it when multiple developers work on it.
 * Create the required DNS entries using route53. Presently I have not implemented creating Route53 entries but this is important for real live production.
@@ -132,7 +132,7 @@ Finally one can access the app using the ELB endpoint, the id of which is given 
 
 ## Improvements - Long Term
 * For betterment of production environment, there is almost always some static content. To better serve them, we need to make use of CloudFront so that it does not cause load on the frontend servers.
-* In this example, we are creating the config from userdata. When apps scale and multiple environment requirements come into play , this method is very rigid and problematic. The best way would be to utilize a consul service and installation of consul agent on each server that will pull the required config for the app.This helps clearly seggregate code from config. To make it secure, we can also use `kms` or `hashicorp vault` to keep secrets encrypted.
+* In this example, we are creating the config from userdata. When apps scale and multiple environment requirements come into play , this method is very rigid and problematic. The best way would be to utilize a consul service and installation of consul agent on each server that will pull the required config for the app.This helps clearly segregate code from config. To make it secure, we can also use `kms` or `hashicorp vault` to keep secrets encrypted.
 * This application directly does operations with database. In production this can be a problem as database can un-necessarily be hit with same queries. This can be solved by using a caching layer using either Redis or memcache. This way the hits to same queries can be greatly reduced to the database. Caching layers also can be a cause of bottleneck. To overcome such cases, circuit-breaker logic with exponential  backoff should be implemented in the application.
 * Look at tools like `terragrunt` `terratest` for further increasing the modularity of the code and for better testing
 * Remove app deployment out of terraform and make it independant. Infrastructre code and deployment methodology should not be so tightly coupled as it will cause a lot of problems when we scale.
